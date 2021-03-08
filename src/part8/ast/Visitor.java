@@ -1,7 +1,5 @@
 package part8.ast;
 
-import part8.UnaryOp;
-
 public interface Visitor<V> {
 	V visit(Num num);
 	V visit(BinOp binOp);

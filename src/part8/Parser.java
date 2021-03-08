@@ -3,6 +3,7 @@ package part8;
 import part8.ast.AST;
 import part8.ast.BinOp;
 import part8.ast.Num;
+import part8.ast.UnaryOp;
 
 public class Parser {
 	private Lexer lexer;

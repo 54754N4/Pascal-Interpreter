@@ -1,11 +1,11 @@
-package part8;
+package part8.ast;
 
-import part8.ast.AST;
+import part8.Token;
 
 public class UnaryOp extends AST {
 	public AST expr;
 	
-	protected UnaryOp(Token op, AST expr) {
+	public UnaryOp(Token op, AST expr) {
 		super(op);
 		this.expr = expr;
 	}
