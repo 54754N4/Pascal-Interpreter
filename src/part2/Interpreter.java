@@ -42,8 +42,11 @@ public class Interpreter {
 	}
 	
 	protected void skipWhitespace() {
-		while (!isFinished() && Character.isWhitespace(currentChar))
+		while (!isFinished() && Character.isWhitespace(currentChar)) {
+			if (is('\n'))
+				line++;
 			advance();
+		}
 	}
 	
 	protected int integer() {

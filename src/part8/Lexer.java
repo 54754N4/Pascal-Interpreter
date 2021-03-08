@@ -41,8 +41,11 @@ public class Lexer {
 	}
 	
 	protected void skipWhitespace() {
-		while (!isFinished() && Character.isWhitespace(current))
+		while (!isFinished() && Character.isWhitespace(current)) {
+			if (is('\n'))
+				line++;
 			advance();
+		}
 	}
 	
 	protected int integer() {
