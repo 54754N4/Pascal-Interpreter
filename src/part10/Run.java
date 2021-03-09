@@ -17,7 +17,8 @@ public class Run {
 			  + "END.  {Part10AST}";
 		Interpreter interpreter = new Interpreter(new Parser(new Lexer(input)));
 		Double result = interpreter.interpret();
-		System.out.println(result);
+		System.out.println(result);				// output
+		// Global scope debug
 		System.out.println("Global vars :");
 		BiConsumer<String, Double> printer = (name, val) -> 
 			System.out.printf("\t%s: %f%n", name, val); 
