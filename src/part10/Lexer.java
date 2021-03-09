@@ -3,6 +3,7 @@ package part10;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Lexer {
 	private static final char EOF = '\0'; // null-char 
 	private String text;
@@ -114,7 +115,7 @@ public class Lexer {
 			advance();
 		};
 		String name = result.toString();
-		return RESERVED.getOrDefault(name, new Token(Type.ID, name));
+		return RESERVED.getOrDefault(name.toUpperCase(), new Token(Type.ID, name));
 	}
 	
 	public Token getNextToken() throws ParsingException {

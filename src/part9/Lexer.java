@@ -89,7 +89,7 @@ public class Lexer {
 			advance();
 		};
 		String name = result.toString();
-		return RESERVED.getOrDefault(name, new Token(Type.ID, name));
+		return RESERVED.getOrDefault(name.toUpperCase(), new Token(Type.ID, name));
 	}
 	
 	public Token getNextToken() throws ParsingException {
