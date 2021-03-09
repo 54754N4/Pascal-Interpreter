@@ -1,20 +1,20 @@
-package part10;
+package part11;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import part10.ast.AST;
-import part10.ast.Assign;
-import part10.ast.BinOp;
-import part10.ast.Block;
-import part10.ast.Compound;
-import part10.ast.NoOp;
-import part10.ast.Num;
-import part10.ast.Program;
-import part10.ast.UnaryOp;
-import part10.ast.Var;
-import part10.ast.VarDecl;
-import part10.ast.Visitor;
+import part11.ast.AST;
+import part11.ast.Assign;
+import part11.ast.BinOp;
+import part11.ast.Block;
+import part11.ast.Compound;
+import part11.ast.NoOp;
+import part11.ast.Num;
+import part11.ast.Program;
+import part11.ast.UnaryOp;
+import part11.ast.Var;
+import part11.ast.VarDecl;
+import part11.ast.Visitor;
 
 public class Interpreter implements Visitor<Double> {
 	public final Map<String, Double> GLOBAL_SCOPE;
@@ -102,7 +102,7 @@ public class Interpreter implements Visitor<Double> {
 	}
 
 	@Override
-	public Double visit(part10.ast.Type type) {
+	public Double visit(part11.ast.Type type) {
 		return null;
 	}
 }
