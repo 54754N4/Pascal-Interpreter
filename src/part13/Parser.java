@@ -1,22 +1,21 @@
-package part12;
+package part13;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import part12.ast.AST;
-import part12.ast.Assign;
-import part12.ast.BinOp;
-import part12.ast.Block;
-import part12.ast.Compound;
-import part12.ast.NoOp;
-import part12.ast.Num;
-import part12.ast.ProcedureDecl;
-import part12.ast.Program;
-import part12.ast.UnaryOp;
-import part12.ast.Var;
-import part12.ast.VarDecl;
-
+import part13.ast.AST;
+import part13.ast.Assign;
+import part13.ast.BinOp;
+import part13.ast.Block;
+import part13.ast.Compound;
+import part13.ast.NoOp;
+import part13.ast.Num;
+import part13.ast.ProcedureDecl;
+import part13.ast.Program;
+import part13.ast.UnaryOp;
+import part13.ast.Var;
+import part13.ast.VarDecl;
 
 // Uses recursive-descent
 public class Parser {
@@ -47,7 +46,7 @@ public class Parser {
 		if (current.getType().equals(type))
 			current = lexer.getNextToken();
 		else
-			lexer.error("Expected type : "+type);
+			lexer.error("Expected type : "+type+" but got : "+current.getType());
 	}
 	
 	/* Production rules */
@@ -57,7 +56,6 @@ public class Parser {
 		return new Block(declarations(), compound_statement());
 	}
 	
-
 	/* declarations : VAR (variable_declaration SEMI)+
      *              | (PROCEDURE ID SEMI block SEMI)*
      *              | empty
@@ -93,7 +91,7 @@ public class Parser {
 			consume(Type.ID);
 		}
 		consume(Type.COLON);
-		part12.ast.Type type = type_spec();
+		part13.ast.Type type = type_spec();
 		List<VarDecl> varDecls = new ArrayList<>();
 		for (Var var : vars)
 			varDecls.add(new VarDecl(var, type));
@@ -103,13 +101,13 @@ public class Parser {
 	/* type_spec : INTEGER
      *           | REAL
 	 */
-	private part12.ast.Type type_spec() {
+	private part13.ast.Type type_spec() {
 		Token token = current;
 		if (is(Type.INTEGER))
 			consume(Type.INTEGER);
 		else
 			consume(Type.REAL);
-		return new part12.ast.Type(token);
+		return new part13.ast.Type(token);
 	}
 
 	// program : PROGRAM variable SEMI block DOT
