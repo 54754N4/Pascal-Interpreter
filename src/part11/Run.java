@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import part11.ast.AST;
 import part11.symbols.Symbol;
 
+@SuppressWarnings("unused")
 public class Run {
 	public static void main(String[] args) {
 //		testInterpreter();
