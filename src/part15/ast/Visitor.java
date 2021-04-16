@@ -88,7 +88,7 @@ public interface Visitor<V> {
 	}
 	
 	default public <T> T error(ErrorCode code, Token token) {
-		throw new SemanticException(code, token, "");
+		throw new SemanticException(code, token, String.format("%s -> %s%n", code.message, token));
 	}
 	
 	default public <T> T error(ErrorCode code, Token token, String message) {

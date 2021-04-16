@@ -12,15 +12,14 @@ import part15.ast.UnaryOp;
 import part15.ast.Var;
 import part15.ast.VarDecl;
 import part15.ast.Visitor;
+import part15.errors.ErrorCode;
 
 public class Interpreter implements Visitor<Double> {
 	public final Map<String, Double> GLOBAL_MEMORY;
 	private AST tree;
-	private Parser parser;
 	
-	public Interpreter(AST tree, Parser parser) {
+	public Interpreter(AST tree) {
 		this.tree = tree;
-		this.parser = parser;
 		GLOBAL_MEMORY = new HashMap<>();
 	}
 
@@ -42,8 +41,7 @@ public class Interpreter implements Visitor<Double> {
 			case FLOAT_DIVIDE: return visit(binOp.left) / visit(binOp.right);
 			case INT_DIVIDE: return (double) (visit(binOp.left).intValue() / visit(binOp.right).intValue());
 			default:
-				parser.getLexer()
-					.error("Unhandled binary operator type : "+binOp.token);
+				error(ErrorCode.UNEXPECTED_TOKEN, binOp.token);
 				return null;	// unreachable
 		}
 	}
@@ -66,7 +64,7 @@ public class Interpreter implements Visitor<Double> {
 		String varName = variable.token.getValue();
 		Double value = GLOBAL_MEMORY.get(varName);
 		if (value == null)
-			parser.getLexer().error("NameError: Variable "+varName+" has not been initialized");
+			error(ErrorCode.UNINITIALIZED_VAR, variable.token);
 		return value;
 	}
 	

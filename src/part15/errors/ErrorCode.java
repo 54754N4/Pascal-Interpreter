@@ -1,9 +1,10 @@
 package part15.errors;
 
 public enum ErrorCode {
-	UNEXPECTED_TOKEN("Unexpected token -> %s"),
-	ID_NOT_FOUND("Identifier not found -> %s"),
-	DUPLICATE_ID("Duplicate id found -> %s");
+	UNEXPECTED_TOKEN("Unexpected token"),
+	ID_NOT_FOUND("Identifier not found"),
+	DUPLICATE_ID("Duplicate id found"),
+	UNINITIALIZED_VAR("Variable has not been initialized");
 	
 	public final String message;
 	

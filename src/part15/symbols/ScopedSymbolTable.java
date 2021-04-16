@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import part15.Logger;
+
 public class ScopedSymbolTable {
 	public static final BuiltinTypeSymbol 
 		INTEGER = new BuiltinTypeSymbol("INTEGER"),
@@ -28,7 +30,7 @@ public class ScopedSymbolTable {
 	}
 	
 	public void insert(Symbol symbol) {
-		System.out.printf("Insert: %s (Scope: %s)%n", symbol.name, scopeName);
+		Logger.log("Insert: %s (Scope: %s)", symbol.name, scopeName);
 		symbols.put(symbol.name, symbol);
 	}
 	
@@ -37,7 +39,7 @@ public class ScopedSymbolTable {
 	}
 	
 	public Symbol lookup(String name, boolean currentOnly) {
-		System.out.printf("Lookup: %s (Scope: %s)%n", name, scopeName);
+		Logger.log("Lookup: %s (Scope: %s)", name, scopeName);
 		var symbol = symbols.get(name);
 		if (symbol != null)
 			return symbol;
@@ -49,13 +51,13 @@ public class ScopedSymbolTable {
 	// Debug
 	
 	public void printContents() {
-		System.out.printf("Scope: Name = %s | Level = %s | Enclosing Scope = %s%n", 
+		Logger.log("Scope: Name = %s | Level = %s | Enclosing Scope = %s", 
 				scopeName, 
 				scopeLevel, 
 				enclosingScope == null ? null : enclosingScope.scopeName);
-		System.out.println("Symbol table contents :");
+		Logger.log("Symbol table contents :");
 		BiConsumer<String, Symbol> symbolPrinter = (name, symbol) -> 
-			System.out.printf("\t%s: %s%n", name, symbol.toString()); 
+			Logger.log("\t%s: %s", name, symbol.toString()); 
 		symbols.forEach(symbolPrinter);
 	}
 	

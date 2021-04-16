@@ -2,7 +2,7 @@ package part15;
 
 import part15.ast.AST;
 
-public class Run {
+public class RunSemantic {
 	public static void main(String[] args) {
 		Parser parser = new Parser(new Lexer(nestedScope));
 		AST tree = parser.parse();

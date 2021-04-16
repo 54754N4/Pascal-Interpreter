@@ -43,7 +43,7 @@ public enum Type {
 		List<Token> list = new ArrayList<>();
 		for (Type type : values()) 
 			if (type.ordinal() >= start && type.ordinal() <= end)
-				list.add(new Token(type));
+				list.add(new Token(type, type.toString(), null, null));
 		return list.toArray(Token[]::new);
 	}
 }

@@ -1,11 +1,10 @@
 package part15;
 
 public class Logger {
-	private boolean _SHOULD_LOG_SCOPE = true;
+	private static boolean _SHOULD_LOG_SCOPE = false;
 	
-	public Logger log(String message, Object...args) {
+	public static void log(String message, Object...args) {
 		if (_SHOULD_LOG_SCOPE)
 			System.out.printf(message+"%n", args);
-		return this;
 	}
 }

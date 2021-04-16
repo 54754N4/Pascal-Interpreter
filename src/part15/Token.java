@@ -5,14 +5,6 @@ public class Token {
 	private final String value;
 	private final Integer line, col;
 	
-	public Token(Type type) {
-		this(type, type.toString());
-	}
-	
-	public Token(Type type, Object value) {
-		this(type, value, null, null);
-	}
-	
 	public Token(Type type, Object value, Integer line, Integer col) {
 		this.type = type;
 		this.value = value.toString();

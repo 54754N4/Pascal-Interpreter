@@ -19,13 +19,13 @@ public class SemanticAnalyzer implements Visitor<Void> {
 	
 	@Override
 	public Void visit(Program node) {
-		System.out.println("Entered 'global' scope");
+		Logger.log("Entered 'global' scope");
 		currentScope = new ScopedSymbolTable("global", 1, currentScope)
 			.initBuiltins();	// only initialise built-ins once
 		visit(node.block);
 //		currentScope.printContents();
 		currentScope = currentScope.enclosingScope;		// reset stack pointer
-		System.out.println("Left 'global' scope");
+		Logger.log("Left 'global' scope");
 		return null;
 	}
 	
@@ -35,7 +35,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		ProcedureSymbol procSymbol = new ProcedureSymbol(procName);
 		currentScope.insert(procSymbol);
 		// Create scope for procedure
-		System.out.println("Entering scope: "+procName);
+		Logger.log("Entering scope: "+procName);
 		ScopedSymbolTable procedureScope = currentScope.createNested(procName);
 		currentScope = procedureScope;
 		// Insert parameters into the procedure scope
@@ -50,7 +50,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		visit(node.block);
 //		currentScope.printContents();
 		currentScope = currentScope.enclosingScope;
-		System.out.printf("Left %s's scope%n", procName);
+		Logger.log("Left %s's scope", procName);
 		return null;
 	}
 	

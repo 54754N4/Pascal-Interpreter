@@ -17,15 +17,8 @@ public class Lexer {
 	public static Map<String, Token> RESERVED = new HashMap<>();
 	
 	static {
-		RESERVED.put("NOP", new Token(Type.NOP));
-		RESERVED.put("PROGRAM", new Token(Type.PROGRAM));
-		RESERVED.put("VAR", new Token(Type.VAR));
-		RESERVED.put("DIV", new Token(Type.INT_DIVIDE));
-		RESERVED.put("INTEGER", new Token(Type.INTEGER));
-		RESERVED.put("REAL", new Token(Type.REAL));
-		RESERVED.put("BEGIN", new Token(Type.BEGIN));
-		RESERVED.put("END", new Token(Type.END));
-		RESERVED.put("PROCEDURE", new Token(Type.PROCEDURE));
+		for (Token reserved : Type.reservedWords()) 
+			RESERVED.put(reserved.getType().name(), reserved);
 	}
 	
 	public Lexer(String text) {
@@ -80,17 +73,22 @@ public class Lexer {
 	}
 	
 	protected void skipWhitespace() {
-		while (!isFinished() && Character.isWhitespace(current)) {
-			if (is('\n'))
-				line++;
+		while (!isFinished() && Character.isWhitespace(current)) 
 			advance();
-		}
 	}
 	
 	protected void skipComments() {
 		while (!is('}')) 
 			advance();
 		advance();	// consume '}' too
+	}
+	
+	private Token createToken(Type type, Object value) {
+		return new Token(type, value, line, col);
+	}
+	
+	private Token createToken(Type type) {
+		return createToken(type, type.toString());
 	}
 	
 	/* Lexer methods */
@@ -112,9 +110,9 @@ public class Lexer {
 				result.append(current);
 				advance();
 			}
-			token = new Token(Type.REAL_CONST, Double.parseDouble(result.toString()));
+			token = createToken(Type.REAL_CONST, Double.parseDouble(result.toString()));
 		} else
-			token = new Token(Type.INTEGER_CONST, Integer.parseInt(result.toString()));
+			token = createToken(Type.INTEGER_CONST, Integer.parseInt(result.toString()));
 		return token;
 	}
 	
@@ -125,7 +123,7 @@ public class Lexer {
 			advance();
 		};
 		String name = result.toString();
-		return RESERVED.getOrDefault(name.toUpperCase(), new Token(Type.ID, name));
+		return RESERVED.getOrDefault(name.toUpperCase(), createToken(Type.ID, name));
 	}
 	
 	public Token getNextToken() throws ParserException {
@@ -143,40 +141,40 @@ public class Lexer {
 				return number();
 			if (peek(":=")) {
 				advance(2);
-				return new Token(Type.ASSIGN);
+				return createToken(Type.ASSIGN);
 			} if (is('+')) {
 				advance();
-				return new Token(Type.PLUS);
+				return createToken(Type.PLUS);
 			} if (is('-')) {
 				advance();
-				return new Token(Type.MINUS);
+				return createToken(Type.MINUS);
 			} if (is('*')) {
 				advance();
-				return new Token(Type.MULTIPLY);
+				return createToken(Type.MULTIPLY);
 			} if (is('/')) {
 				advance();
-				return new Token(Type.FLOAT_DIVIDE);
+				return createToken(Type.FLOAT_DIVIDE);
 			} if (is('(')) {
 				advance();
-				return new Token(Type.LPAREN);
+				return createToken(Type.LPAREN);
 			} if (is(')')) {
 				advance();
-				return new Token(Type.RPAREN);
+				return createToken(Type.RPAREN);
 			} if (is('.')) {
 				advance();
-				return new Token(Type.DOT);
+				return createToken(Type.DOT);
 			} if (is(';')) {
 				advance();
-				return new Token(Type.SEMI);
+				return createToken(Type.SEMI);
 			} if (is(':')) {
 				advance();
-				return new Token(Type.COLON);
+				return createToken(Type.COLON);
 			} if (is(',')) {
 				advance();
-				return new Token(Type.COMMA);
+				return createToken(Type.COMMA);
 			}
 			error("Unrecognized char : "+current);
 		}
-		return new Token(Type.EOF);
+		return createToken(Type.EOF);
 	}
 }
