@@ -3,9 +3,9 @@ package part15;
 public class Token {
 	private final Type type;
 	private final String value;
-	private final Integer line, col;
+	private final int line, col;
 	
-	public Token(Type type, Object value, Integer line, Integer col) {
+	public Token(Type type, Object value, int line, int col) {
 		this.type = type;
 		this.value = value.toString();
 		this.line = line;

@@ -13,10 +13,19 @@ import part15.ast.Var;
 import part15.ast.VarDecl;
 import part15.ast.Visitor;
 import part15.errors.ErrorCode;
+import part15.errors.SemanticException;
 
 public class Interpreter implements Visitor<Double> {
 	public final Map<String, Double> GLOBAL_MEMORY;
 	private AST tree;
+	
+	public Double error(ErrorCode code, Token token) {
+		return error(code, token, "");
+	}
+	
+	public Double error(ErrorCode code, Token token, String message) {
+		throw new SemanticException(code, token, String.format("%s -> %s%n%s", code.message, token, message));
+	}
 	
 	public Interpreter(AST tree) {
 		this.tree = tree;
@@ -40,9 +49,7 @@ public class Interpreter implements Visitor<Double> {
 			case MULTIPLY: return visit(binOp.left) * visit(binOp.right);
 			case FLOAT_DIVIDE: return visit(binOp.left) / visit(binOp.right);
 			case INT_DIVIDE: return (double) (visit(binOp.left).intValue() / visit(binOp.right).intValue());
-			default:
-				error(ErrorCode.UNEXPECTED_TOKEN, binOp.token);
-				return null;	// unreachable
+			default: return error(ErrorCode.UNEXPECTED_TOKEN, binOp.token);
 		}
 	}
 
@@ -64,7 +71,7 @@ public class Interpreter implements Visitor<Double> {
 		String varName = variable.token.getValue();
 		Double value = GLOBAL_MEMORY.get(varName);
 		if (value == null)
-			error(ErrorCode.UNINITIALIZED_VAR, variable.token);
+			return error(ErrorCode.UNINITIALIZED_VAR, variable.token);
 		return value;
 	}
 	

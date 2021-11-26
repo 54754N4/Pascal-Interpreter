@@ -9,6 +9,7 @@ import part15.ast.Var;
 import part15.ast.VarDecl;
 import part15.ast.Visitor;
 import part15.errors.ErrorCode;
+import part15.errors.SemanticException;
 import part15.symbols.ProcedureSymbol;
 import part15.symbols.ScopedSymbolTable;
 import part15.symbols.Symbol;
@@ -16,6 +17,14 @@ import part15.symbols.VarSymbol;
 
 public class SemanticAnalyzer implements Visitor<Void> {
 	public ScopedSymbolTable currentScope;  // represents our stack pointer
+	
+	public Void error(ErrorCode code, Token token) {
+		return error(code, token, "");
+	}
+	
+	public Void error(ErrorCode code, Token token, String message) {
+		throw new SemanticException(code, token, String.format("%s -> %s%n%s", code.message, token, message));
+	}
 	
 	@Override
 	public Void visit(Program node) {

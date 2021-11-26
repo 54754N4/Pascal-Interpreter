@@ -20,7 +20,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		currentScope = new ScopedSymbolTable("global", 1, currentScope)
 			.initBuiltins();	// only initialise built-ins once
 		visit(node.block);
-//		currentScope.printContents();
+		currentScope.printContents();
 		currentScope = currentScope.enclosingScope;		// reset stack pointer
 		System.out.println("Left 'global' scope");
 		return null;
@@ -39,13 +39,13 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		for (Param param : node.params) {
 			Symbol paramType = currentScope.lookup(param.type.getValue());
 	 		String paramName = param.var.token.getValue();
-			VarSymbol varSymbol = new VarSymbol(paramName, paramType);
+			VarSymbol varSymbol = new VarSymbol(paramName, paramType.type);
 			currentScope.insert(varSymbol);
 			procSymbol.params.add(varSymbol);
 		}
 		// Execute procedure
 		visit(node.block);
-//		currentScope.printContents();
+		currentScope.printContents();
 		currentScope = currentScope.enclosingScope;
 		System.out.printf("Left %s's scope%n", procName);
 		return null;
@@ -56,7 +56,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		String typeName = node.type.token.getValue();
 		Symbol type = currentScope.lookup(typeName);
 		String varName = node.var.token.getValue();
-		VarSymbol varSymbol = new VarSymbol(varName, type);
+		VarSymbol varSymbol = new VarSymbol(varName, type.type);
 		if (currentScope.lookup(varName, true) != null)
 			error("Duplicate identifier found for '%s'", varName);
 		currentScope.insert(varSymbol);
@@ -67,7 +67,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 	public Void visit(Var node) {
 		String varName = node.token.getValue();
 		Symbol varSymbol = currentScope.lookup(varName);
-//		currentScope.printContents();
+		currentScope.printContents();
 		if (varSymbol == null) 
 			error("Variable '%s' was never declared", varName);
 		return null;

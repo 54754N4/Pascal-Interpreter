@@ -2,7 +2,7 @@ package part14.symbols;
 
 public class Symbol {
 	public final String name;
-	public Symbol type;
+	public final Symbol type;
 	
 	public Symbol(String name, Symbol type) {
 		this.name = name;

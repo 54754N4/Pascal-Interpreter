@@ -17,6 +17,7 @@ import part15.ast.Var;
 import part15.ast.VarDecl;
 import part15.ast.Visitor;
 import part15.errors.ErrorCode;
+import part15.errors.SemanticException;
 import part15.symbols.ProcedureSymbol;
 import part15.symbols.ScopedSymbolTable;
 import part15.symbols.Symbol;
@@ -25,28 +26,12 @@ import part15.symbols.VarSymbol;
 public class SourceToSourceCompiler implements Visitor<String> {
 	public ScopedSymbolTable currentScope;
 	
-	public static void main(String[] args) {
-		String source = "program Main;\r\n"
-				+ "   var x, y : real;\r\n"
-				+ "   var z : integer;\r\n"
-				+ "\r\n"
-				+ "   procedure AlphaA(a : integer);\r\n"
-				+ "      var y : integer;\r\n"
-				+ "   begin { AlphaA }\r\n"
-				+ "      x := a + x + y;\r\n"
-				+ "   end;  { AlphaA }\r\n"
-				+ "\r\n"
-				+ "   procedure AlphaB(a : integer);\r\n"
-				+ "      var b : integer;\r\n"
-				+ "   begin { AlphaB }\r\n"
-				+ "   end;  { AlphaB }\r\n"
-				+ "\r\n"
-				+ "begin { Main }\r\n"
-				+ "end.  { Main }";
-		Parser parser = new Parser(new Lexer(source));
-		AST tree = parser.parse();
-		SourceToSourceCompiler compiler = new SourceToSourceCompiler();
-		System.out.println(compiler.visit(tree));
+	public String error(ErrorCode code, Token token) {
+		return error(code, token, "");
+	}
+	
+	public String error(ErrorCode code, Token token, String message) {
+		throw new SemanticException(code, token, String.format("%s -> %s%n%s", code.message, token, message));
 	}
 	
 	@Override
@@ -135,7 +120,7 @@ public class SourceToSourceCompiler implements Visitor<String> {
 		String varName = node.var.token.getValue();
 		VarSymbol varSymbol = new VarSymbol(varName, type);
 		if (currentScope.lookup(varName, true) != null)
-			error(ErrorCode.DUPLICATE_ID, node.var.token);
+			return error(ErrorCode.DUPLICATE_ID, node.var.token);
 		currentScope.insert(varSymbol);
 		return String.format("   var %s : %s;", 
 				varName + currentScope.scopeLevel, 
@@ -161,7 +146,7 @@ public class SourceToSourceCompiler implements Visitor<String> {
 		String varName = node.token.getValue();
 		Symbol varSymbol = currentScope.lookup(varName);
 		if (varSymbol == null) 
-			error(ErrorCode.ID_NOT_FOUND, node.token);
+			return error(ErrorCode.ID_NOT_FOUND, node.token);
 		return String.format("<%s:%s>", 
 				varName + currentScope.scopeLevel, 
 				varSymbol.type.name);

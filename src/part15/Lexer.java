@@ -1,6 +1,5 @@
 package part15;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import part15.errors.LexerException;
@@ -11,15 +10,6 @@ public class Lexer {
 	private String text;
 	private int pos, line, col;
 	private char current;
-	
-	// Reserved keywords table
-	
-	public static Map<String, Token> RESERVED = new HashMap<>();
-	
-	static {
-		for (Token reserved : Type.reservedWords()) 
-			RESERVED.put(reserved.getType().name(), reserved);
-	}
 	
 	public Lexer(String text) {
 		this.text = text;
@@ -123,7 +113,11 @@ public class Lexer {
 			advance();
 		};
 		String name = result.toString();
-		return RESERVED.getOrDefault(name.toUpperCase(), createToken(Type.ID, name));
+		Map<String, Type> reserved = Type.reservedWords();
+		Type type;
+		if ((type = reserved.get(name.toUpperCase())) != null)
+			return createToken(type);
+		return createToken(Type.ID, name);
 	}
 	
 	public Token getNextToken() throws ParserException {

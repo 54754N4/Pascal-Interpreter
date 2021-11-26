@@ -7,6 +7,6 @@ public class VarSymbol extends Symbol {
 	
 	@Override
 	public String toString() {
-		return String.format("%s<%s: %s>", getClass().getSimpleName(), name, type.toString());
+		return String.format("%s<%s: %s>", getClass().getSimpleName(), name, type.name);
 	}
 }

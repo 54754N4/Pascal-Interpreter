@@ -2,14 +2,14 @@ package part15.errors;
 
 import part15.Token;
 
-public class SemanticException extends TokenizedException {
+public class SemanticException extends RuntimeException {
 	private static final long serialVersionUID = -6266327354745625842L;
-
-	public SemanticException(ErrorCode errorCode, Token token, String message) {
-		super(errorCode, token, message);
-	}
+	public final ErrorCode code;
+	public final Token token;
 	
-	public SemanticException(String message) {
+	public SemanticException(ErrorCode code, Token token, String message) {
 		super(message);
+		this.code = code;
+		this.token = token;
 	}
 }

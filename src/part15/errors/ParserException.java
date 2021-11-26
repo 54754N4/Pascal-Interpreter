@@ -2,14 +2,14 @@ package part15.errors;
 
 import part15.Token;
 
-public class ParserException extends TokenizedException {
+public class ParserException extends RuntimeException {
 	private static final long serialVersionUID = 5658901637650178863L;
-
-	public ParserException(ErrorCode errorCode, Token token, String message) {
-		super(errorCode, token, message);
-	}
+	public final ErrorCode errorCode;
+	public final Token token;
 	
-	public ParserException(String message) {
+	public ParserException(ErrorCode errorCode, Token token, String message) {
 		super(message);
+		this.errorCode = errorCode;
+		this.token = token;
 	}
 }

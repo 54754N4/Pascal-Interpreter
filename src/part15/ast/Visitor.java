@@ -1,9 +1,5 @@
 package part15.ast;
 
-import part15.Token;
-import part15.errors.ErrorCode;
-import part15.errors.SemanticException;
-
 public interface Visitor<V> {
 	default V visit(BinOp op) {
 		visit(op.left);
@@ -85,13 +81,5 @@ public interface Visitor<V> {
 		throw new IllegalStateException(
 			"Unimplemented if branch for type: "
 			+ ast.getClass());
-	}
-	
-	default public <T> T error(ErrorCode code, Token token) {
-		throw new SemanticException(code, token, String.format("%s -> %s%n", code.message, token));
-	}
-	
-	default public <T> T error(ErrorCode code, Token token, String message) {
-		throw new SemanticException(code, token, String.format("%s -> %s%n%s", code.message, token, message));
 	}
 }

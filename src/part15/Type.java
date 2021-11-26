@@ -1,7 +1,7 @@
 package part15;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum Type {
 	DOT("."), SEMI(";"), COLON(":"), COMMA(","),
@@ -11,7 +11,7 @@ public enum Type {
 	ID, INTEGER_CONST, REAL_CONST,
 	ASSIGN(":="), EOF,
 	
-	// Insert reserved words between PROGRAM and END
+	// Insert reserved words between PROGRAM and END so Type::reservedWords works correctly
 	PROGRAM, 
 	VAR, 
 	INTEGER,
@@ -37,13 +37,13 @@ public enum Type {
 		return representation;
 	}
 	
-	public static Token[] reservedWords() {
+	public static Map<String, Type> reservedWords() {
 		int start = Type.PROGRAM.ordinal(),
 			end = Type.END.ordinal();
-		List<Token> list = new ArrayList<>();
+		Map<String, Type> dict = new HashMap<>();
 		for (Type type : values()) 
 			if (type.ordinal() >= start && type.ordinal() <= end)
-				list.add(new Token(type, type.toString(), null, null));
-		return list.toArray(Token[]::new);
+				dict.put(type.representation, type);
+		return dict;
 	}
 }

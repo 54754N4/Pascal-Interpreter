@@ -1,9 +1,9 @@
 package part15.ast;
 
-import part15.Lexer;
+import part15.Token;
 
 public class NoOp extends AST {
 	public NoOp() {
-		super(Lexer.RESERVED.get("NOP"));
+		super(new Token(part15.Type.NOP, "NOP", -1, -1));
 	}
 }

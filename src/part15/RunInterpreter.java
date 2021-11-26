@@ -7,7 +7,7 @@ import part15.errors.SemanticException;
 
 public class RunInterpreter {
 	public static void main(String[] args) throws InterruptedException {
-		String text = RunInterpreter.executable;
+		String text = executable;
 		// Lexical analysis
 		Lexer lexer = new Lexer(text);
 		Parser parser = new Parser(lexer);
