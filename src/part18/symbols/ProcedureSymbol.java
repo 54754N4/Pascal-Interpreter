@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import part18.ast.Block;
+
 public class ProcedureSymbol extends Symbol {
 	public final List<VarSymbol> params;
+	public Block block;	// points to AST subtree of procedure body
 	
 	public ProcedureSymbol(String name, VarSymbol...params) {
 		super(name);

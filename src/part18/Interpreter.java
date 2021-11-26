@@ -1,5 +1,7 @@
 package part18;
 
+import java.util.List;
+
 import part18.ast.AST;
 import part18.ast.Assign;
 import part18.ast.BinOp;
@@ -12,6 +14,8 @@ import part18.ast.Var;
 import part18.ast.VarDecl;
 import part18.ast.Visitor;
 import part18.errors.ErrorCode;
+import part18.symbols.ProcedureSymbol;
+import part18.symbols.VarSymbol;
 
 public class Interpreter implements Visitor<Double> {
 	public final CallStack callStack;
@@ -33,12 +37,12 @@ public class Interpreter implements Visitor<Double> {
 		
 		ActivationRecord ar = new ActivationRecord(programName, ARType.PROGRAM, 1);
 		callStack.push(ar);
-		Logger.logs(callStack.toString());
+		Logger.logs(callStack);
 		
 		visit(node.block);
 		
 		Logger.logs("LEAVE: PROGRAM %s", programName);
-		Logger.logs(callStack.toString());
+		Logger.logs(callStack);
 		
 		callStack.pop();
 		return null;
@@ -86,6 +90,23 @@ public class Interpreter implements Visitor<Double> {
 	
 	@Override
 	public Double visit(ProcedureCall node) {
+		String procName = node.name;
+		ActivationRecord ar = new ActivationRecord(procName, ARType.PROCEDURE, 2);
+		ProcedureSymbol procSymbol = node.procSymbol;
+		// Semantic analyzer checks if proc declaration and call have same parameters
+		// so we can suppose here that formalParams.size == actualParams.size
+		List<VarSymbol> formalParams = procSymbol.params;
+		List<AST> actualParams = node.params;
+		for (int i=0; i<formalParams.size(); i++)
+			ar.set(formalParams.get(i).name, visit(actualParams.get(i)));
+		
+		callStack.push(ar);
+		Logger.logs("ENTER: PROCEDURE %s", procName);
+		Logger.logs(callStack);
+		visit(procSymbol.block);
+		Logger.logs("LEAVE: PROCEDURE %s", procName);
+		Logger.logs(callStack);
+		callStack.pop();
 		return null;
 	}
 	

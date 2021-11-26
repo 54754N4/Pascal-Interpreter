@@ -9,7 +9,8 @@ public class CallStack extends Stack<ActivationRecord> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CALL STACK\n");
-		forEach(ar -> sb.append(ar.toString()+"\n"));
+		for (int i=size()-1; i>=0; i--)
+			sb.append(get(i).toString()+"\n");
 		return sb.toString();
 	}
 }

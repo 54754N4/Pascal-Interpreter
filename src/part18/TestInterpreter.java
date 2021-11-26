@@ -39,9 +39,16 @@ public class TestInterpreter {
 	
 	public static final String
 		test0 = "program Main;\r\n"
-				+ "var x, y : integer;\r\n"
+				+ "\r\n"
+				+ "procedure Alpha(a : integer; b : integer);\r\n"
+				+ "var x : integer;\r\n"
+				+ "begin\r\n"
+				+ "   x := (a + b ) * 2;\r\n"
+				+ "end;\r\n"
+				+ "\r\n"
 				+ "begin { Main }\r\n"
-				+ "   y := 7;\r\n"
-				+ "   x := (y + 3) * 3;\r\n"
+				+ "\r\n"
+				+ "   Alpha(3 + 5, 7);  { procedure call }\r\n"
+				+ "\r\n"
 				+ "end.  { Main }";
 }

@@ -51,6 +51,8 @@ public class SemanticAnalyzer implements Visitor<Void> {
 //		currentScope.printContents();
 		currentScope = currentScope.enclosingScope;
 		Logger.log("Left %s's scope", procName);
+		// Hookup reference of procedure body to procSymbol
+		procSymbol.block = node.block;
 		return null;
 	}
 	
@@ -84,6 +86,7 @@ public class SemanticAnalyzer implements Visitor<Void> {
 		ProcedureSymbol procSymbol = ProcedureSymbol.class.cast(symbol);
 		if (node.params.size() != procSymbol.params.size())
 			return error(ErrorCode.WRONG_PARAMS_NUM, node.token);
+		node.procSymbol = procSymbol;
 		for (AST param : node.params)
 			visit(param);
 		return null;
